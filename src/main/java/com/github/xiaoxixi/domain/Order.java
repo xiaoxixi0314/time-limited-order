@@ -6,9 +6,9 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class OrderVO {
+public class Order {
 
-    private Long orderId;
+    private Long id;
 
-    private OrderStatus status;
+    private OrderStatus orderStatus;
 }

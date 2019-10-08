@@ -2,7 +2,7 @@ package com.github.xiaoxixi.service;
 
 import com.github.xiaoxixi.domain.OrderMessage;
 
-public interface ITimeLimitedOrderService {
+public interface TimeLimitedOrderService {
 
 
     /**

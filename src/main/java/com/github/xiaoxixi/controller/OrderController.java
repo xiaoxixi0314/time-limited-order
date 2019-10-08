@@ -1,8 +1,9 @@
 package com.github.xiaoxixi.controller;
 
-import com.github.xiaoxixi.domain.OrderVO;
-import com.github.xiaoxixi.enums.OrderStatus;
-import org.springframework.web.bind.annotation.PostMapping;
+import com.github.xiaoxixi.service.OrderManager;
+import com.github.xiaoxixi.service.TimeLimitedOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,17 +11,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/order")
 public class OrderController {
 
+
+    @Autowired
+    private OrderManager orderManager;
+
+    @Autowired
+    private TimeLimitedOrderService timeLimitedOrderService;
+
     /**
      * 下单
      * @return
      */
-    @PostMapping("/init")
-    public OrderVO init() {
-        OrderVO order = new OrderVO();
-        order.setOrderId(System.currentTimeMillis());
-        order.setStatus(OrderStatus.INIT);
-        // todo send message to rabbitmq
-        return order;
+    @GetMapping("/init")
+    public boolean init() {
+        // 生成一条订单数据，并将订单号发送到mq中
+        Long orderId = orderManager.initOrder();
+        return timeLimitedOrderService.sendOrderToMQ(orderId);
     }
 
 
